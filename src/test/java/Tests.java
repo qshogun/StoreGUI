@@ -2,6 +2,7 @@ import com.qshogun.storegui.components.NavigationMenu;
 import com.qshogun.storegui.models.User;
 import com.qshogun.storegui.pages.ContactUsPage;
 import com.qshogun.storegui.pages.HomePage;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -74,6 +75,17 @@ public class Tests extends TestsSuite {
                 .isAt()
                 .registerAccountWithValidRequiredData(getUser())
                 .isAt();
+    }
+    @Test
+    public void isNumberOfVisibleAddToCartProductsCorrectTest() {
+        homePage.isAt()
+                .printHowManyAllVisibleAddToCartProducts();
+        Assert.assertEquals(7, homePage.getListOfVisibleAddToCartProducts().size());
+    }
+    @Test
+    public void isNumberOfProductsShownInCartTheSameAsAddedToCart() {
+        homePage.isAt()
+                .addToCartProducts(3);
     }
 
 }
