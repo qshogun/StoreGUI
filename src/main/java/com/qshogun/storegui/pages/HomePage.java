@@ -6,6 +6,7 @@ import org.junit.Assert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
 
 import java.util.ArrayList;
@@ -16,7 +17,10 @@ public class HomePage extends BasePage {
     private WebElement carouselSlider;
 
     ArrayList<WebElement> listOfVisibleAddToCartProducts = new ArrayList<WebElement>
-            (driver.findElements(By.xpath("//a[contains(@class,'add_to_cart')]")));
+            (driver.findElements(By.className("product-container")));
+
+    @FindBy(xpath = "//a[contains(@class,'add_to_cart')]//span")
+    private WebElement addToCartButton;
 
     @FindBy(xpath = "//span[contains(@class,'continue')]//i")
     private WebElement continueShoppingButton;
@@ -25,12 +29,12 @@ public class HomePage extends BasePage {
     private WebElement cartQuantity;
 
 
-    public ArrayList<WebElement> getListOfVisibleAddToCartProducts() {
-        return listOfVisibleAddToCartProducts;
-    }
-
+    Actions action = new Actions(driver);
     public HomePage(WebDriver driver) {
         super(driver);
+    }
+    public ArrayList<WebElement> getListOfVisibleAddToCartProducts() {
+        return listOfVisibleAddToCartProducts;
     }
 
     public HomePage isAt() {
@@ -47,7 +51,7 @@ public class HomePage extends BasePage {
     public NavigationMenu addToCartProducts(int numberOfProductsToBeAddedToCart) {
         waitToBeClickable(listOfVisibleAddToCartProducts.get(0));
         for(int i=0;i<numberOfProductsToBeAddedToCart;i++) {
-            listOfVisibleAddToCartProducts.get(i).click();
+            action.moveToElement(listOfVisibleAddToCartProducts.get(i)).moveToElement(addToCartButton).click().build().perform();
             waitToBeClickable(continueShoppingButton);
             continueShoppingButton.click();
         }
