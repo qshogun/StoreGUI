@@ -18,6 +18,9 @@ public class NavigationMenu extends BasePage {
     @FindBy(className = "logout")
     private static WebElement signOutLink;
 
+    @FindBy(xpath = "//span[contains(@class,'quantity')]")
+    private WebElement cartQuantity;
+
     public ContactUsPage clickContactUs() {
         waitToBeClickable(contactUsLink);
         contactUsLink.click();
