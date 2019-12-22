@@ -36,6 +36,13 @@ public class HomePage extends BasePage {
     public ArrayList<WebElement> getListOfVisibleAddToCartProducts() {
         return listOfVisibleAddToCartProducts;
     }
+    public HomePage printAllVisibleProducts() {
+        String listOfVisibleProducts = getListOfVisibleAddToCartProducts().toString();
+        for(WebElement webElement : listOfVisibleAddToCartProducts) {
+            System.out.println(webElement.getText() + "\n");
+        }
+        return this;
+    }
 
     public HomePage isAt() {
         waitForVisibilityOf(carouselSlider);
@@ -47,6 +54,22 @@ public class HomePage extends BasePage {
         waitForVisibilityOf(carouselSlider);
         System.out.println(getListOfVisibleAddToCartProducts().size());
         return this;
+    }
+    public NavigationMenu addToCartFirstProduct() {
+        waitToBeClickable(listOfVisibleAddToCartProducts.get(0));
+        action.moveToElement(listOfVisibleAddToCartProducts.get(0)).moveToElement(addToCartButton).click().build().perform();
+        waitToBeClickable(continueShoppingButton);
+        continueShoppingButton.click();
+        Assert.assertEquals(1, Integer.parseInt(cartQuantity.getText()));
+        return new NavigationMenu(driver);
+    }
+    public NavigationMenu addToCartSecondProduct() {
+        waitToBeClickable(listOfVisibleAddToCartProducts.get(1));
+        action.moveToElement(listOfVisibleAddToCartProducts.get(1)).moveToElement(addToCartButton).click().build().perform();
+        waitToBeClickable(continueShoppingButton);
+        continueShoppingButton.click();
+        Assert.assertEquals(1, Integer.parseInt(cartQuantity.getText()));
+        return new NavigationMenu(driver);
     }
     public NavigationMenu addToCartProducts(int numberOfProductsToBeAddedToCart) {
         waitToBeClickable(listOfVisibleAddToCartProducts.get(0));
