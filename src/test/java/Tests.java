@@ -83,7 +83,19 @@ public class Tests extends TestsSuite {
         Assert.assertEquals(7, homePage.getListOfVisibleAddToCartProducts().size());
     }
     @Test
-    public void isNumberOfProductsShownInCartTheSameAsAddedToCart() {
+    public void isOneProductAddedToCartVisibleInTheCartTest() {
+        homePage.isAt()
+                .addToCartFirstProduct();
+    }
+    @Test
+    public void isSecondProductAddedToCartVisibleInTheCartTest() {
+        homePage.isAt()
+                .printAllVisibleProducts()
+                .addToCartSecondProduct();
+    }
+
+    @Test
+    public void isNumberOfProductsShownInCartTheSameAsAddedToCartTest() {
         homePage.isAt()
                 .addToCartProducts(3);
     }
