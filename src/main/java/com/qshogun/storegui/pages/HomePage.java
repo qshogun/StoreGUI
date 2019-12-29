@@ -10,13 +10,14 @@ import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class HomePage extends BasePage {
 
     @FindBy(id = "slider_row")
     private WebElement carouselSlider;
 
-    ArrayList<WebElement> listOfVisibleAddToCartProducts = new ArrayList<WebElement>
+    List<WebElement> listOfVisibleAddToCartProducts = new ArrayList<WebElement>
             (driver.findElements(By.className("product-container")));
 
     @FindBy(xpath = "//a[contains(@class,'add_to_cart')]//span")
@@ -24,6 +25,9 @@ public class HomePage extends BasePage {
 
     @FindBy(xpath = "//span[contains(@class,'continue')]//i")
     private WebElement continueShoppingButton;
+
+    @FindBy(xpath = "//span[contains(text(),'checkout')]")
+    private WebElement proceedToCheckoutButton;
 
     @FindBy(xpath = "//span[contains(@class,'quantity')]")
     private WebElement cartQuantity;
@@ -33,7 +37,7 @@ public class HomePage extends BasePage {
     public HomePage(WebDriver driver) {
         super(driver);
     }
-    public ArrayList<WebElement> getListOfVisibleAddToCartProducts() {
+    public List<WebElement> getListOfVisibleAddToCartProducts() {
         return listOfVisibleAddToCartProducts;
     }
     public HomePage printAllVisibleProducts() {
@@ -55,30 +59,15 @@ public class HomePage extends BasePage {
         System.out.println(getListOfVisibleAddToCartProducts().size());
         return this;
     }
-    public NavigationMenu addToCartFirstProduct() {
+    public HomePage addProductToCart() {
         waitToBeClickable(listOfVisibleAddToCartProducts.get(0));
         action.moveToElement(listOfVisibleAddToCartProducts.get(0)).moveToElement(addToCartButton).click().build().perform();
-        waitToBeClickable(continueShoppingButton);
-        continueShoppingButton.click();
-        Assert.assertEquals(1, Integer.parseInt(cartQuantity.getText()));
-        return new NavigationMenu(driver);
+        //Assert.assertEquals(1, Integer.parseInt(cartQuantity.getText()));
+        return this;
     }
-    public NavigationMenu addToCartSecondProduct() {
-        waitToBeClickable(listOfVisibleAddToCartProducts.get(1));
-        action.moveToElement(listOfVisibleAddToCartProducts.get(1)).moveToElement(addToCartButton).click().build().perform();
-        waitToBeClickable(continueShoppingButton);
-        continueShoppingButton.click();
-        Assert.assertEquals(1, Integer.parseInt(cartQuantity.getText()));
-        return new NavigationMenu(driver);
-    }
-    public NavigationMenu addToCartProducts(int numberOfProductsToBeAddedToCart) {
-        waitToBeClickable(listOfVisibleAddToCartProducts.get(0));
-        for(int i=0;i<numberOfProductsToBeAddedToCart;i++) {
-            action.moveToElement(listOfVisibleAddToCartProducts.get(i)).moveToElement(addToCartButton).click().build().perform();
-            waitToBeClickable(continueShoppingButton);
-            continueShoppingButton.click();
-        }
-        Assert.assertEquals(numberOfProductsToBeAddedToCart, Integer.parseInt(cartQuantity.getText()));
-        return new NavigationMenu(driver);
+    public CheckoutPage goToCheckout() {
+        waitToBeClickable(proceedToCheckoutButton);
+        proceedToCheckoutButton.click();
+        return new CheckoutPage(driver);
     }
 }
