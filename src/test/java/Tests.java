@@ -1,15 +1,16 @@
 import com.qshogun.storegui.components.NavigationMenu;
-import com.qshogun.storegui.models.User;
+import com.qshogun.storegui.listeners.ListenerTest;
 import com.qshogun.storegui.pages.CheckoutPage;
 import com.qshogun.storegui.pages.ContactUsPage;
 import com.qshogun.storegui.pages.HomePage;
 import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
-
-import java.util.zip.CheckedOutputStream;
+import org.testng.annotations.BeforeClass;
+import org.testng.annotations.Listeners;
+import org.testng.annotations.Test;
 
 import static com.qshogun.storegui.provider.DataFactory.getUser;
+
+@Listeners(ListenerTest.class)
 
 public class Tests extends TestsSuite {
 
@@ -18,21 +19,22 @@ public class Tests extends TestsSuite {
     private ContactUsPage contactUsPage;
     private CheckoutPage checkoutPage;
 
-    @Before
+    @BeforeClass
     public void initPages() {
         homePage = new HomePage(driver);
         navigationMenu = new NavigationMenu(driver);
         contactUsPage = new ContactUsPage(driver);
+        checkoutPage = new CheckoutPage(driver);
     }
 
     @Test
-    public void doesWebsiteOpenTest() {
+    public void T1_doesWebsiteOpenTest() {
         homePage.isAt();
     }
 
     @Test
     public void doesContactUsPageOpenTest() {
-        doesWebsiteOpenTest();
+        homePage.isAt();
         navigationMenu.clickContactUs()
                 .isAt();
     }
@@ -87,9 +89,15 @@ public class Tests extends TestsSuite {
         Assert.assertEquals(7, homePage.getListOfVisibleAddToCartProducts().size());
     }
     @Test
-    public void isProductAddedToCartVisibleInTheCartTest() {
+    public void T5_isProductAddedToCartVisibleInTheCartTest() {
         homePage.isAt()
                 .addProductToCart();
+    }
+    @Test
+    public void T6_isProductRemovedFromCartTest() {
+        homePage.isAt()
+                .addProductToCartAndContinueShopping()
+                .removeProductFromCart();
     }
     @Test
     public void isProductQuantityChangeableAtCheckoutTest() {
@@ -100,6 +108,19 @@ public class Tests extends TestsSuite {
                 .increaseQuantity()
                 .decreaseQuantity()
                 .typeQuantity();
+    }
+    @Test
+    public void isTotalPriceCorrectAfterChangingQuantityOfProductsAtCheckoutTest() {
+        homePage.isAt()
+                .addProductToCart()
+                .goToCheckout();
+        checkoutPage.isAt()
+                .increaseQuantity()
+                .checkTotalPrice()
+                .decreaseQuantity()
+                .checkTotalPrice()
+                .typeQuantity()
+                .checkTotalPrice();
     }
 
 
