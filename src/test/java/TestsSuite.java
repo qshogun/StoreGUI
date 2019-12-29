@@ -1,14 +1,14 @@
 import io.github.bonigarcia.wdm.WebDriverManager;
-import org.junit.After;
-import org.junit.Before;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.testng.annotations.AfterSuite;
+import org.testng.annotations.BeforeSuite;
 
 public class TestsSuite {
 
     public WebDriver driver;
 
-    @Before
+    @BeforeSuite
     public void before() {
         WebDriverManager.chromedriver().setup();
         driver = new ChromeDriver();
@@ -17,7 +17,7 @@ public class TestsSuite {
         driver.get("http://automationpractice.com/");
     }
 
-    @After
+    @AfterSuite
     public void after() {
         driver.quit();
     }
