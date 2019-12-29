@@ -20,7 +20,7 @@ public class ListenerTest implements ITestListener {
     public void onTestFailure(ITestResult result) {
         String testCaseId = HelperMethods.getTestCaseId(result.getName());
         AddResultForTestCase.addFail(testCaseId,
-                result.getName()+" test failed.");
+                result.getThrowable().toString());
     }
 
     public void onTestSkipped(ITestResult result) {
