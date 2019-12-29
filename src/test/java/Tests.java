@@ -1,10 +1,13 @@
 import com.qshogun.storegui.components.NavigationMenu;
 import com.qshogun.storegui.models.User;
+import com.qshogun.storegui.pages.CheckoutPage;
 import com.qshogun.storegui.pages.ContactUsPage;
 import com.qshogun.storegui.pages.HomePage;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+
+import java.util.zip.CheckedOutputStream;
 
 import static com.qshogun.storegui.provider.DataFactory.getUser;
 
@@ -13,6 +16,7 @@ public class Tests extends TestsSuite {
     private HomePage homePage;
     private NavigationMenu navigationMenu;
     private ContactUsPage contactUsPage;
+    private CheckoutPage checkoutPage;
 
     @Before
     public void initPages() {
@@ -83,21 +87,20 @@ public class Tests extends TestsSuite {
         Assert.assertEquals(7, homePage.getListOfVisibleAddToCartProducts().size());
     }
     @Test
-    public void isOneProductAddedToCartVisibleInTheCartTest() {
+    public void isProductAddedToCartVisibleInTheCartTest() {
         homePage.isAt()
-                .addToCartFirstProduct();
+                .addProductToCart();
     }
     @Test
-    public void isSecondProductAddedToCartVisibleInTheCartTest() {
+    public void isProductQuantityChangeableAtCheckoutTest() {
         homePage.isAt()
-                .printAllVisibleProducts()
-                .addToCartSecondProduct();
+                .addProductToCart()
+                .goToCheckout();
+        checkoutPage.isAt()
+                .increaseQuantity()
+                .decreaseQuantity()
+                .typeQuantity();
     }
 
-    @Test
-    public void isNumberOfProductsShownInCartTheSameAsAddedToCartTest() {
-        homePage.isAt()
-                .addToCartProducts(3);
-    }
 
 }
